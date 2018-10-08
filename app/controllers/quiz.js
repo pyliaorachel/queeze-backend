@@ -62,8 +62,7 @@ function _create(username, quizName, questionsData) {
             }).then(result => {
                 return User.findOneAndUpdate({ username: username }, { $push: { quizzes: quizName }});
             }).then(originalData => { // if want the updated data, add `{ new: true }` above
-                console.log('quiz', quiz, quiz._id);
-                resolve(quiz._id);
+                resolve({ id: quiz._id });
             }).catch(err => {
                 console.log(err);
                 reject(err);
@@ -130,7 +129,7 @@ function _del(username, quizName) {
             }).then(result => {
                 return User.findOneAndUpdate({ username }, { $pull: { quizzes: quizName }});
             }).then(result => {
-                resolve(quizName);
+                resolve({ quizName });
             }).catch(err => {
                 console.log(err);
                 reject(err);
@@ -140,32 +139,32 @@ function _del(username, quizName) {
 
 function create(req, res) {
     _create(req.user.username, req.body.name, req.body.questions)
-        .then(result => res.send(result))
-        .catch(err => res.status(500).send(err));
+        .then(result => res.json(result))
+        .catch(error => res.status(500).json({ error }));
 }
 
 function readList(req, res) {
     _readList(req.user.username, req.body.name, req.body.questions)
         .then(result => res.json(result))
-        .catch(err => res.status(500).send(err));
+        .catch(error => res.status(500).json({ error }));
 }
 
 function read(req, res) {
     _read(req.user.username, req.params.quizName)
         .then(result => res.json(result))
-        .catch(err => res.status(500).send(err));
+        .catch(error => res.status(500).json({ error }));
 }
 
 function edit(req, res) {
     _edit(req.user.username, req.params.quizName, req.body.name, req.body.questions)
-        .then(result => res.send(result))
-        .catch(err => res.status(500).send(err));
+        .then(result => res.json(result))
+        .catch(error => res.status(500).json({ error }));
 }
 
 function del(req, res) {
     _del(req.user.username, req.params.quizName)
-        .then(result => res.send(result))
-        .catch(err => res.status(500).send(err));
+        .then(result => res.json(result))
+        .catch(error => res.status(500).json({ error }));
 }
 
 module.exports = {

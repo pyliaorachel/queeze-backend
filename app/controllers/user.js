@@ -6,16 +6,15 @@ function login(req, res) {
 
     User.findOne({ username: req.body.username, password: req.body.password })
         .then(data => {
-            console.log(data);
             if (data) {
                 const user = new User(data);
                 token = user.generateJwt();
-                res.send(token);
+                res.json({ token });
             } else
-                res.status(401).send(errorUtils.LOGIN_FAIL);
+                res.status(401).json({ error: errorUtils.LOGIN_FAIL });
         }).catch(err => {
             console.log(err);
-            res.status(500).send(err);
+            res.status(500).json({ error: err });
         });
 }
 
@@ -31,10 +30,10 @@ function create(req, res) {
         .then(data => {
             console.log(data);
             token = user.generateJwt();
-            res.send(token);
+            res.json({ token });
         }).catch(err => {
             console.log(err);
-            res.status(500).send(err);
+            res.status(500).json({ error: err });
         });
 }
 
