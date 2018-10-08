@@ -2,6 +2,7 @@
 const mongoose = require('mongoose');
 const dbConfig = require('./config/db');
 
+mongoose.Promise = global.Promise; // use the standard Promise instead of the mongoose one
 mongoose.connect(dbConfig.url, { useNewUrlParser: true });
 
 // Setup express app

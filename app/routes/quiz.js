@@ -1,29 +1,11 @@
 const express = require('express');
 const router = express.Router();
+const quiz = require('../controllers/quiz');
 
-router.get('/', (req, res) => {
-    console.log('Quiz list');
-    res.send('quiz');
-});
-
-router.post('/create', (req, res) => {
-    console.log('Quiz create', req.body);
-    res.send('quiz created');
-});
-
-router.get('/:quizId', (req, res) => {
-    console.log('Quiz', req.params.quizId);
-    res.send('quiz ' + req.params.quizId);
-});
-
-router.post('/:quizId/edit', (req, res) => {
-    console.log('Quiz edit', req.params.quizId, req.body);
-    res.send('quiz edited ' + req.params.quizId);
-});
-
-router.get('/:quizId/delete', (req, res) => {
-    console.log('Quiz delete', req.params.quizId);
-    res.send('quiz deleted ' + req.params.quizId);
-});
+router.get('/', quiz.readList);
+router.post('/create', quiz.create);
+router.get('/:quizName', quiz.read);
+router.post('/:quizName/edit', quiz.edit);
+router.get('/:quizName/delete', quiz.del);
 
 module.exports = router;
