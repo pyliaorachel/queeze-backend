@@ -1,6 +1,24 @@
 const User = require('../models/user');
 const errorUtils = require('../utils/error');
 
+/* Validation helper functions */
+
+function _validateNoUser(username) {
+    return new Promise((resolve, reject) => {
+        User.count({ username })
+            .then(cnt => {
+                if (cnt > 0)
+                    reject('Username taken.');
+                else
+                    resolve();
+            }).catch(err => {
+                reject(err);
+            }); 
+    });
+}
+
+/* Auth */
+
 function login(req, res) {
     console.log('User login', req.body);
 
@@ -26,9 +44,10 @@ function create(req, res) {
         password: req.body.password,
     });
 
-    user.save()
-        .then(data => {
-            console.log(data);
+    _validateNoUser(req.body.username)
+        .then(result => {
+            return user.save();
+        }).then(data => {
             token = user.generateJwt();
             res.json({ token });
         }).catch(err => {
