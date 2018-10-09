@@ -13,8 +13,8 @@ Backend for the Queeze app built on Node.js and MongoDB.
 # Install dependencies
 $ npm install
 
-# Add a secret key
-# See `config/keys.template.js` and insert your key, and change the name to `config/keys.js`
+# Export a secret key to environment variable
+$ export SECRET=<secret-key>
 
 # Run app
 $ npm start
