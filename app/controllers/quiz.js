@@ -75,7 +75,7 @@ function _readList(username) {
     return new Promise((resolve, reject) => {
         Quiz.find({ user: username })
             .then(quizzes => {
-                resolve(quizzes);
+                resolve({ data: quizzes });
             }).catch(err => {
                 console.log(err);
                 reject(err);
@@ -90,7 +90,7 @@ function _read(username, quizName) {
             .then(result => {
                 return Question.find({ user: username, quizName });
             }).then(questions => {
-                resolve(questions);
+                resolve({ data: questions });
             }).catch(err => {
                 console.log(err);
                 reject(err);
